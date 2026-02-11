@@ -5,14 +5,26 @@
 		<Version>0.1.8</Version>
 		<Authors>Pasha</Authors>
 		<Company>SUS Digital Productions</Company>
-		<Product>AtomicMarket Client</Product>
-		<PackageTags>atomicassets, atomictools, atomicmarket</PackageTags>
-		<Description>Open Source AtomicMarket Package brought to you by SUS Digital Productions. Github repository link: https://github.com/SUS-Digital-Productions/SUS.Atomic.Client</Description>
+		<Product>SUS.AtomicMarket.Client</Product>
+		<PackageId>SUS.AtomicMarket.Client</PackageId>
+		<Title>SUS Atomic Market Client</Title>
+		<PackageTags>atomicmarket;blockchain;wax;eos;nft;marketplace;api-client</PackageTags>
+		<Description>Open source .NET client for AtomicMarket API. Provides strongly-typed, fluent API access to all AtomicMarket endpoints including sales, auctions, and buyoffers. Brought to you by SUS Digital Productions.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/SUS-Digital-Productions/sus-atomic-client</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/SUS-Digital-Productions/sus-atomic-client</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="SUS.Atomic.Base" Version="0.1.8" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>

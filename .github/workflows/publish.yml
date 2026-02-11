@@ -1,0 +1,61 @@
+name: Publish to NuGet
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Extract version from tag or input
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "release" ]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        else
+          echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Restore dependencies
+      run: dotnet restore SUS.Atomic.Client/SUS.Atomic.Client.sln
+    
+    - name: Build
+      run: dotnet build SUS.Atomic.Client/SUS.Atomic.Client.sln --configuration Release --no-restore /p:Version=${{ steps.version.outputs.version }}
+    
+    - name: Pack NuGet packages
+      run: |
+        dotnet pack SUS.Atomic.Client/SUS.Atomic.Base/SUS.Atomic.Base.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.version.outputs.version }}
+        dotnet pack SUS.Atomic.Client/SUS.AtomicAssets.Client/SUS.AtomicAssets.Client.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.version.outputs.version }}
+        dotnet pack SUS.Atomic.Client/SUS.AtomicMarket.Client/SUS.AtomicMarket.Client.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.version.outputs.version }}
+        dotnet pack SUS.Atomic.Client/SUS.AtomicTools.Client/SUS.AtomicTools.Client.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.version.outputs.version }}
+    
+    - name: Push to NuGet
+      run: dotnet nuget push "./packages/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    
+    - name: Upload packages as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages-${{ steps.version.outputs.version }}
+        path: ./packages/*.nupkg
+        retention-days: 90

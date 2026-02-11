@@ -1,4 +1,5 @@
 ﻿using SUS.Atomic.Base.Interfaces;
+using SUS.Atomic.Base.Exceptions;
 using SUS.AtomicAssets.Client.Responses;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace SUS.AtomicAssets.Client
                 return result;
             }
             ErrorResponse errorResponse = await response.Content.ReadAsAsync<ErrorResponse>();
-            throw new Exception(errorResponse.Message);
+            throw new AtomicApiException(errorResponse.Message);
         }
     }
 
@@ -143,6 +144,28 @@ namespace SUS.AtomicAssets.Client
 
     public static class OwnerFilterableExtensionMethods
     {
+        /// <summary>
+        /// Filters the query by owner account name.
+        /// </summary>
+        /// <typeparam name="Type">The type of the implementing endpoint.</typeparam>
+        /// <param name="ownerFilterable">The endpoint that supports owner filtering.</param>
+        /// <param name="owner">The account name of the owner to filter by.</param>
+        /// <returns>The endpoint instance for method chaining.</returns>
+        public static Type Owner<Type>(this IOwnerFilterable<Type> ownerFilterable, string owner)
+        {
+            ownerFilterable.AddQuery("owner", owner);
+            return (Type)ownerFilterable;
+        }
+
+        /// <summary>
+        /// Filters the query by owner account name.
+        /// Legacy method kept for backward compatibility.
+        /// </summary>
+        /// <typeparam name="Type">The type of the implementing endpoint.</typeparam>
+        /// <param name="ownerFillterable">The endpoint that supports owner filtering.</param>
+        /// <param name="owner">The account name of the owner to filter by.</param>
+        /// <returns>The endpoint instance for method chaining.</returns>
+        [Obsolete("Use the Owner method with IOwnerFilterable instead.")]
         public static Type Owner<Type>(this IOwnerFillterable<Type> ownerFillterable, string owner)
         {
             ownerFillterable.AddQuery("owner", owner);

@@ -1,0 +1,29 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Restore dependencies
+      run: dotnet restore SUS.Atomic.Client/SUS.Atomic.Client.sln
+    
+    - name: Check code formatting
+      run: dotnet format SUS.Atomic.Client/SUS.Atomic.Client.sln --verify-no-changes --verbosity diagnostic
+    
+    - name: Run code analysis
+      run: dotnet build SUS.Atomic.Client/SUS.Atomic.Client.sln --configuration Release /p:TreatWarningsAsErrors=false

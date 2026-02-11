@@ -5,15 +5,28 @@
 		<Version>0.1.8</Version>
 		<Authors>Pasha</Authors>
 		<Company>SUS Digital Productions</Company>
-		<Product>AtomicTools Client</Product>
-		<PackageTags>atomicassets, atomictools, atomicmarket</PackageTags>
-		<Nullable>enable</Nullable>
-		<Description>Open Source AtomicTools Package brought to you by SUS Digital Productions. Github repository link: https://github.com/SUS-Digital-Productions/SUS.Atomic.Client</Description>
+		<Product>SUS.AtomicTools.Client</Product>
+		<PackageId>SUS.AtomicTools.Client</PackageId>
+		<Title>SUS Atomic Tools Client</Title>
+		<PackageTags>atomictools;blockchain;wax;eos;nft;api-client</PackageTags>
+		<Description>Open source .NET client for AtomicTools API. Provides strongly-typed, fluent API access to all AtomicTools endpoints. Brought to you by SUS Digital Productions.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/SUS-Digital-Productions/sus-atomic-client</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/SUS-Digital-Productions/sus-atomic-client</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="SUS.Atomic.Base" Version="0.1.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
